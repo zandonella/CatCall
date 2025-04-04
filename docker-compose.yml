@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  cat-database-microservice:
+    build: ./cat-database-microservice
+    ports:
+      - "3214:3214"
+    env_file:
+      - ./cat-database-microservice/.env
+    volumes:
+      - ./cat-database-microservice/uploads:/app/uploads
+    depends_on:
+      - mongo
+    
+  auth-microservice:
+    build: ./auth-microservice
+    ports:
+      - "3456:3456"
+    env_file:
+      - ./auth-microservice/.env
+    depends_on:
+      - mongo
+
+  favorites-microservice:
+    build: ./favorites-microservice
+    ports:
+      - "4014:4014"
+    env_file:
+      - ./favorites-microservice/.env
+    depends_on:
+      - mongo
+
+  preferences-microservice:
+    build: ./preferences-microservice
+    ports:
+      - "3114:3114"
+    env_file:
+      - ./preferences-microservice/.env
+    depends_on:
+      - mongo
+  
+  recommender-microservice:
+    build: ./recommender-microservice
+    ports:
+      - "3014:3014"
+    env_file:
+      - ./recommender-microservice/.env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
