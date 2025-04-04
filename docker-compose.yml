@@ -48,6 +48,20 @@ services:
     depends_on:
       - mongo
 
+  frontend:
+    build: ./CatCall-Frontend
+    env_file:
+      - ./CatCall-Frontend/.env
+    ports:
+      - "3000:80"
+    depends_on:
+      - cat-database-microservice
+      - auth-microservice
+      - favorites-microservice
+      - preferences-microservice
+      - recommender-microservice
+
+
   mongo:
     image: mongo:6
     ports:
