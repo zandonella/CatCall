@@ -1,12 +1,11 @@
-version: '3.8'
-
 services:
   cat-database-microservice:
     build: ./cat-database-microservice
     ports:
-      - "3214:3214"
-    env_file:
-      - ./cat-database-microservice/.env
+      - "${PORT_CAT_DB}:${PORT_CAT_DB}"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT_CAT_DB}
     volumes:
       - ./cat-database-microservice/uploads:/app/uploads
     depends_on:
@@ -15,45 +14,61 @@ services:
   auth-microservice:
     build: ./auth-microservice
     ports:
-      - "3456:3456"
-    env_file:
-      - ./auth-microservice/.env
+      - "${PORT_AUTH}:${PORT_AUTH}"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT_AUTH}
     depends_on:
       - mongo
 
   favorites-microservice:
     build: ./favorites-microservice
     ports:
-      - "4014:4014"
-    env_file:
-      - ./favorites-microservice/.env
+      - "${PORT_FAVORITES}:${PORT_FAVORITES}"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT_FAVORITES}
     depends_on:
       - mongo
 
   preferences-microservice:
     build: ./preferences-microservice
     ports:
-      - "3114:3114"
-    env_file:
-      - ./preferences-microservice/.env
+      - "${PORT_PREFERENCES}:${PORT_PREFERENCES}"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT_PREFERENCES}
+      - AUTH_SERVICE_URL=${URL_AUTH}
     depends_on:
       - mongo
   
   recommender-microservice:
     build: ./recommender-microservice
     ports:
-      - "3014:3014"
-    env_file:
-      - ./recommender-microservice/.env
+      - "${PORT_RECOMMENDER}:${PORT_RECOMMENDER}"
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${PORT_RECOMMENDER}
+      - PREFERENCES_SERVICE_URL=${URL_PREFERENCES}
+      - FAVORITES_SERVICE_URL=${URL_FAVORITES}
+      - CAT_DATABASE_URL=${URL_CAT_DB}
     depends_on:
       - mongo
+      - cat-database-microservice
+      - favorites-microservice
+      - preferences-microservice
 
   frontend:
     build: ./CatCall-Frontend
-    env_file:
-      - ./CatCall-Frontend/.env
+
+    environment:
+      - VITE_AUTH_URL=${URL_AUTH}
+      - VITE_CAT_DB_URL=${URL_CAT_DB}
+      - VITE_PREFERENCES_DB_URL=${URL_PREFERENCES}
+      - VITE_RECOMMENDER_SERVICE_URL=${URL_RECOMMENDER}
+      - VITE_FAVORITES_SERVICE_URL=${URL_FAVORITES}
     ports:
-      - "3000:80"
+      - "${PORT_FRONTEND}:80"
     depends_on:
       - cat-database-microservice
       - auth-microservice
