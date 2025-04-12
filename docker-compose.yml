@@ -86,13 +86,13 @@ services:
   mongo:
     image: mongo:6
     ports:
-      - "127.0.0.1:27018:27017"
+      - "127.0.0.1:${LOCAL_MONGO_PORT}:27017"
     volumes:
       - mongo-data:/data/db
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-}
 
 volumes:
   mongo-data:
