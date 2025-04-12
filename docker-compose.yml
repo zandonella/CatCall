@@ -59,14 +59,14 @@ services:
       - preferences-microservice
 
   frontend:
-    build: ./CatCall-Frontend
-
-    environment:
-      - VITE_AUTH_URL=${URL_AUTH}
-      - VITE_CAT_DB_URL=${URL_CAT_DB}
-      - VITE_PREFERENCES_DB_URL=${URL_PREFERENCES}
-      - VITE_RECOMMENDER_SERVICE_URL=${URL_RECOMMENDER}
-      - VITE_FAVORITES_SERVICE_URL=${URL_FAVORITES}
+    build: 
+      context: ./CatCall-Frontend
+      args:
+        VITE_AUTH_URL: ${VITE_AUTH_URL}
+        VITE_CAT_DB_URL: ${VITE_CAT_DB_URL}
+        VITE_FAVORITES_SERVICE_URL: ${VITE_FAVORITES_SERVICE_URL}
+        VITE_PREFERENCES_DB_URL: ${VITE_PREFERENCES_DB_URL}
+        VITE_RECOMMENDER_SERVICE_URL: ${VITE_RECOMMENDER_SERVICE_URL}
     ports:
       - "${PORT_FRONTEND}:80"
     depends_on:
