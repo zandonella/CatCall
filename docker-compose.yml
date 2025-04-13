@@ -2,7 +2,7 @@ services:
   cat-database-microservice:
     build: ./cat-database-microservice
     ports:
-      - "${PORT_CAT_DB}:${PORT_CAT_DB}"
+      - '${PORT_CAT_DB}:${PORT_CAT_DB}'
     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT_CAT_DB}
@@ -10,46 +10,42 @@ services:
       - ./cat-database-microservice/uploads:/app/uploads
     depends_on:
       - mongo
-    restart: always
 
   auth-microservice:
     build: ./auth-microservice
     ports:
-      - "${PORT_AUTH}:${PORT_AUTH}"
+      - '${PORT_AUTH}:${PORT_AUTH}'
     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT_AUTH}
     depends_on:
       - mongo
-    restart: always
 
   favorites-microservice:
     build: ./favorites-microservice
     ports:
-      - "${PORT_FAVORITES}:${PORT_FAVORITES}"
+      - '${PORT_FAVORITES}:${PORT_FAVORITES}'
     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT_FAVORITES}
     depends_on:
       - mongo
-    restart: always
 
   preferences-microservice:
     build: ./preferences-microservice
     ports:
-      - "${PORT_PREFERENCES}:${PORT_PREFERENCES}"
+      - '${PORT_PREFERENCES}:${PORT_PREFERENCES}'
     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT_PREFERENCES}
       - AUTH_SERVICE_URL=${URL_AUTH}
     depends_on:
       - mongo
-    restart: always
 
   recommender-microservice:
     build: ./recommender-microservice
     ports:
-      - "${PORT_RECOMMENDER}:${PORT_RECOMMENDER}"
+      - '${PORT_RECOMMENDER}:${PORT_RECOMMENDER}'
     environment:
       - MONGO_URI=${MONGO_URI}
       - PORT=${PORT_RECOMMENDER}
@@ -61,11 +57,9 @@ services:
       - cat-database-microservice
       - favorites-microservice
       - preferences-microservice
-    restart: always
-
 
   frontend:
-    build: 
+    build:
       context: ./CatCall-Frontend
       args:
         VITE_AUTH_URL: ${VITE_AUTH_URL}
@@ -74,22 +68,20 @@ services:
         VITE_PREFERENCES_DB_URL: ${VITE_PREFERENCES_DB_URL}
         VITE_RECOMMENDER_SERVICE_URL: ${VITE_RECOMMENDER_SERVICE_URL}
     ports:
-      - "${PORT_FRONTEND}:80"
+      - '${PORT_FRONTEND}:80'
     depends_on:
       - cat-database-microservice
       - auth-microservice
       - favorites-microservice
       - preferences-microservice
       - recommender-microservice
-    restart: always
 
   mongo:
     image: mongo:6
     ports:
-      - "127.0.0.1:${LOCAL_MONGO_PORT}:27017"
+      - '127.0.0.1:${LOCAL_MONGO_PORT}:27017'
     volumes:
       - mongo-data:/data/db
-    restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-}
