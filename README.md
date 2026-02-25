@@ -4,7 +4,7 @@ A **microservice-based**, Tinder-style **cat adoption platform** featuring
 card-based liking, **location-based recommendations**, and **Dockerized
 deployment** using Node.js, React, and MongoDB.
 
-🌐**Live Site:** [https://catcall.zando.dev](https://catcall.zando.dev)
+**Live Site:** Live site was taken offline 2/25/2026 to support the deployment of newer projects that reflect my ability more accurately. Documentation of all microservices and main project are still accurate and up to date, but local deployment is now the only supported deployment method.
 
 Built with:
 
